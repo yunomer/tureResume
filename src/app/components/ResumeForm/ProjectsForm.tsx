@@ -11,7 +11,7 @@ import type { ResumeProject } from "lib/redux/types";
 export const ProjectsForm = () => {
   const projects = useAppSelector(selectProjects);
   const dispatch = useAppDispatch();
-  const showDelete = projects.length > 1;
+  const showDelete = projects.length >= 1;
 
   return (
     <Form form="projects" addButtonText="Add Project">

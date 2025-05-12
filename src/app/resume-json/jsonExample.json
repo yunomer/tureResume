@@ -1,0 +1,116 @@
+{
+  "resume": {
+    "profile": {
+      "name": "Omer Ashfaq",
+      "summary": "Experienced Full Stack Developer and Product Strategist with over 3 years of expertise in developing and optimizing user-centered web applications, leading cross-functional teams, and implementing data-driven strategies. Proficient in a variety of languages such as Python, JavaScript, and TypeScript, as well as technologies like Next.js, React.js, and Docker. Demonstrated success in increasing user acquisition and engagement by leveraging innovative technological solutions. Adept at designing REST APIs, supporting data migration processes, and following Agile methodologies to ensure timely project completion.",
+      "email": "ashfam5@mcmaster.ca",
+      "phone": "(519) 835-0659",
+      "location": "Ontario, Canada",
+      "url": "linkedin: omerashfaq"
+    },
+    "workExperiences": [
+      {
+        "company": "Comikey Media Inc.",
+        "jobTitle": "Product Strategist",
+        "date": "Nov 2022 - May 2024",
+        "descriptions": [
+          "Led the development and strategy for a global manga and webtoon platform with an 11% increase in user acquisition within the first year.",
+          "Directed market research and analysis, creating go-to-market strategies to expand user segments and boost product retention rates.",
+          "Implemented data-driven KPI analyses to monitor and optimize user funnels, improving sign-ups by 13% and pay-per-view sales by 19%."
+        ]
+      },
+      {
+        "company": "DeepBiologics Inc.",
+        "jobTitle": "Intermediate Full Stack Developer",
+        "date": "Jul 2021 - Nov 2022",
+        "descriptions": [
+          "Developed user-friendly interfaces for a web-based glucose monitoring platform using Next.js and Tailwind, enhancing the user experience for medical professionals and patients.",
+          "Maintained and optimized the backend architecture with Nest.js, resulting in improved data processing speed and reduced communication latency between doctors and patients.",
+          "Collaborated with cross-functional teams to plan and release new features, reducing cycle time and cutting down new feature request tickets by 15%."
+        ]
+      },
+      {
+        "company": "The University of Tokyo",
+        "jobTitle": "Junior R&D Engineer",
+        "date": "Apr 2020 - Aug 2021",
+        "descriptions": [
+          "Engineered a cutting-edge text localization algorithm for comic panels, improving accuracy by 19% over industry benchmarks.",
+          "Partnered with a team of NLP experts to enhance multimodal AI models, elevating context comprehension by 23%.",
+          "Researched and implemented few-shot learning methodologies, significantly shortening data processing time and allowing AI models to adapt more quickly to diverse comic styles."
+        ]
+      }
+    ],
+    "educations": [
+      {
+        "school": "McMaster University",
+        "degree": "Master of Business Administration (MBA)",
+        "gpa": "",
+        "date": "2025",
+        "descriptions": []
+      },
+      {
+        "school": "University of Guelph",
+        "degree": "Bachelor of Computing (B.Comp.)",
+        "gpa": "",
+        "date": "2020",
+        "descriptions": []
+      }
+    ],
+    "projects": [],
+    "skills": {
+      "featuredSkills": [
+        "Full Stack Development",
+        "REST API Design",
+        "Agile Methodologies",
+        "Data-Driven Product Strategy",
+        "Mentorship",
+        "Team Collaboration",
+        "Problem-Solving"
+      ],
+      "descriptions": [
+        "Languages: Python, C#, JavaScript, TypeScript, Node.js",
+        "Technologies: Next.js, React.js, Docker, PostgreSQL, Redis, Supabase",
+        "Tools: Git, Jira, Trello, Bitbucket, CI/CD Tools",
+        "API Design: REST, JSON",
+        "Integration Patterns: SOAP, REST, FTP",
+        "Frameworks: Node.js, Express.js, HTML/CSS, Vue.js, Svelte"
+      ]
+    },
+    "custom": {
+      "descriptions": []
+    }
+  },
+  "settings": {
+    "themeColor": "#38bdf8",
+    "fontFamily": "Roboto",
+    "fontSize": "11",
+    "documentSize": "Letter",
+    "formToShow": {
+      "workExperiences": true,
+      "educations": true,
+      "projects": false,
+      "skills": true,
+      "custom": false
+    },
+    "formToHeading": {
+      "educations": "EDUCATION",
+      "workExperiences": "WORK EXPERIENCE",
+      "projects": "PROJECTS",
+      "skills": "SKILLS",
+      "custom": "CUSTOM SECTION"
+    },
+    "formsOrder": [
+      "educations",
+      "workExperiences",
+      "skills",
+      "projects",
+      "custom"
+    ],
+    "showBulletPoints": {
+      "educations": true,
+      "projects": true,
+      "skills": true,
+      "custom": true
+    }
+  }
+}
