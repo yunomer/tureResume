@@ -4,10 +4,12 @@ import Link from "next/link";
 import Image from "next/image";
 import logoSrc from "public/logo.svg";
 import { cx } from "lib/cx";
+import { useSession, signIn, signOut } from "next-auth/react";
 
 export const TopNavBar = () => {
   const pathName = usePathname();
   const isHomePage = pathName === "/";
+  const { data: session, status } = useSession();
 
   return (
     <header
@@ -43,6 +45,27 @@ export const TopNavBar = () => {
               {text}
             </Link>
           ))}
+          {/* Auth Buttons Start */}
+          {status === "loading" && (
+            <span className="px-1.5 py-2 text-gray-400 lg:px-4">Loading...</span>
+          )}
+          {status === "unauthenticated" && (
+            <button
+              onClick={() => signIn("google")}
+              className="rounded-md px-1.5 py-2 text-gray-500 hover:bg-gray-100 focus-visible:bg-gray-100 lg:px-4"
+            >
+              Sign In
+            </button>
+          )}
+          {status === "authenticated" && (
+            <button
+              onClick={() => signOut()}
+              className="rounded-md px-1.5 py-2 text-gray-500 hover:bg-gray-100 focus-visible:bg-gray-100 lg:px-4"
+            >
+              Sign Out
+            </button>
+          )}
+          {/* Auth Buttons End */}
           <div className="ml-1 mt-1">
             <iframe
               src="https://ghbtns.com/github-btn.html?user=xitanggg&repo=open-resume&type=star&count=true"
