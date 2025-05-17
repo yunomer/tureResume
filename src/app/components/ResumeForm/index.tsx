@@ -15,6 +15,8 @@ import { ThemeForm } from "components/ResumeForm/ThemeForm";
 import { CustomForm } from "components/ResumeForm/CustomForm";
 import { FlexboxSpacer } from "components/FlexboxSpacer";
 import { cx } from "lib/cx";
+import { selectResume } from "lib/redux/resumeSlice"; // Added for accessing resume data
+import { useRouter } from 'next/navigation'; // Added for future redirect
 
 const formTypeToComponent: { [type in ShowForm]: () => JSX.Element } = {
   workExperiences: WorkExperiencesForm,
@@ -24,7 +26,47 @@ const formTypeToComponent: { [type in ShowForm]: () => JSX.Element } = {
   custom: CustomForm,
 };
 
-export const ResumeForm = () => {
+interface ResumeFormProps {
+  resumeId?: string | null;
+}
+
+export const ResumeForm = ({ resumeId }: ResumeFormProps) => {
+  const router = useRouter();
+  const currentResume = useAppSelector(selectResume);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveResume = async () => {
+    setIsSaving(true);
+    try {
+      let response;
+      if (resumeId) {
+        // Update existing resume
+        response = await fetch(`/api/resumes/${resumeId}`, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: currentResume }),
+        });
+        if (!response.ok) throw new Error('Failed to update resume.');
+        alert('Resume updated successfully!');
+      } else {
+        // Create new resume
+        response = await fetch('/api/resumes', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content: currentResume }),
+        });
+        if (!response.ok) throw new Error('Failed to create resume.');
+        const newResume = await response.json();
+        alert('Resume created successfully!');
+        router.push(`/resume-builder/${newResume.id}`);
+      }
+    } catch (error) {
+      console.error('Error saving resume:', error);
+      alert(`Error saving resume: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
   useSetInitialStore();
   useSaveStateToLocalStorageOnChange();
 
@@ -48,6 +90,14 @@ export const ResumeForm = () => {
         })}
         <ThemeForm />
         <br />
+        <button
+          type="button"
+          onClick={handleSaveResume}
+          disabled={isSaving}
+          className="mt-6 rounded-md bg-blue-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600 disabled:opacity-50"
+        >
+          {isSaving ? 'Saving...' : 'Save Resume'}
+        </button>
       </section>
       <FlexboxSpacer maxWidth={50} className="hidden md:block" />
     </div>

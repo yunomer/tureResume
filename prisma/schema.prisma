@@ -44,12 +44,17 @@ model Session {
 model User {
   id            String    @id @default(cuid())
   name          String?
-  email         String?   @unique
+  email         String    @unique
   emailVerified DateTime?
   image         String?
+  password      String?   // Added for credentials-based auth
   accounts      Account[]
   sessions      Session[]
-  resume        Resume?
+  resumes       Resume[]
+
+  // Fields for password reset
+  passwordResetToken          String?   @unique
+  passwordResetTokenExpiresAt DateTime?
 }
 
 model VerificationToken {
@@ -65,6 +70,6 @@ model Resume {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   content   Json
-  userId    String   @unique
+  userId    String
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

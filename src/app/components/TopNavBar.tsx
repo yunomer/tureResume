@@ -1,5 +1,5 @@
 "use client";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import logoSrc from "public/logo.svg";
@@ -8,8 +8,13 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 export const TopNavBar = () => {
   const pathName = usePathname();
+  const router = useRouter(); // Add useRouter hook
   const isHomePage = pathName === "/";
   const { data: session, status } = useSession();
+
+  // Common class for navigation links and buttons for consistent styling
+  const navItemClassName = "rounded-md px-1.5 py-2 text-gray-500 hover:bg-gray-100 focus-visible:bg-gray-100 lg:px-4";
+  
 
   return (
     <header
@@ -21,10 +26,10 @@ export const TopNavBar = () => {
     >
       <div className="flex h-10 w-full items-center justify-between">
         <Link href="/">
-          <span className="sr-only">OpenResume</span>
+          <span className="sr-only">Ture</span>
           <Image
             src={logoSrc}
-            alt="OpenResume Logo"
+            alt="Ture Logo"
             className="h-8 w-full"
             priority
           />
@@ -33,48 +38,49 @@ export const TopNavBar = () => {
           aria-label="Site Nav Bar"
           className="flex items-center gap-2 text-sm font-medium"
         >
-          {[
+          {status === "authenticated" && (
+            <>
+              {[
             ["/resume-builder", "Builder"],
             ["/resume-parser", "Parser"],
           ].map(([href, text]) => (
             <Link
               key={text}
-              className="rounded-md px-1.5 py-2 text-gray-500 hover:bg-gray-100 focus-visible:bg-gray-100 lg:px-4"
+              className={navItemClassName} // Apply common style
               href={href}
             >
               {text}
             </Link>
           ))}
-          {/* Auth Buttons Start */}
-          {status === "loading" && (
-            <span className="px-1.5 py-2 text-gray-400 lg:px-4">Loading...</span>
+            </>
           )}
-          {status === "unauthenticated" && (
+
+          {/* Auth Links/Buttons Start */}
+          {status === "loading" && (
+            <span className={navItemClassName}>Loading...</span> // Apply common style (adjust if needed for span)
+          )}
+          {status === "unauthenticated" && pathName !== "/auth/login" && (
             <button
-              onClick={() => signIn("google")}
-              className="rounded-md px-1.5 py-2 text-gray-500 hover:bg-gray-100 focus-visible:bg-gray-100 lg:px-4"
+              onClick={() => router.push('/auth/login')}
+              className={navItemClassName} // Apply common style
             >
               Sign In
             </button>
           )}
           {status === "authenticated" && (
-            <button
-              onClick={() => signOut()}
-              className="rounded-md px-1.5 py-2 text-gray-500 hover:bg-gray-100 focus-visible:bg-gray-100 lg:px-4"
-            >
-              Sign Out
-            </button>
+            <>
+              <Link href="/dashboard" className={navItemClassName}>
+                Dashboard
+              </Link>
+              <button
+                onClick={() => signOut({ callbackUrl: '/' })}
+                className={navItemClassName} // Apply common style
+              >
+                Sign Out
+              </button>
+            </>
           )}
-          {/* Auth Buttons End */}
-          <div className="ml-1 mt-1">
-            <iframe
-              src="https://ghbtns.com/github-btn.html?user=xitanggg&repo=open-resume&type=star&count=true"
-              width="100"
-              height="20"
-              className="overflow-hidden border-none"
-              title="GitHub"
-            />
-          </div>
+          {/* Auth Links/Buttons End */}
         </nav>
       </div>
     </header>

@@ -7,24 +7,17 @@ import { prisma } from '../../lib/prisma';
  * @swagger
  * /api/resume:
  *   get:
- *     summary: Retrieves the authenticated user's resume
+ *     summary: Retrieves the authenticated user's resume (DEPRECATED)
+ *     description: This endpoint is deprecated. Use /api/resumes or /api/resumes/[resumeId] instead.
  *     tags: [Resume]
  *     security:
  *       - bearerAuth: []
  *     responses:
- *       200:
- *         description: Successfully retrieved resume data. Can be null if no resume exists for the user.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Resume'
- *               nullable: true
- *       401:
- *         description: Unauthorized - User not authenticated.
- *       500:
- *         description: Internal server error.
+ *       410:
+ *         description: Gone - Endpoint deprecated.
  *   post:
- *     summary: Creates or updates the authenticated user's resume
+ *     summary: Creates or updates the authenticated user's resume (DEPRECATED)
+ *     description: This endpoint is deprecated. Use /api/resumes or /api/resumes/[resumeId] instead.
  *     tags: [Resume]
  *     security:
  *       - bearerAuth: []
@@ -41,28 +34,20 @@ import { prisma } from '../../lib/prisma';
  *             required:
  *               - content
  *     responses:
- *       200:
- *         description: Successfully updated resume data.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Resume'
- *       201:
- *         description: Successfully created resume data.
- *         content:
- *           application/json:
- *             schema:
- *               $ref: '#/components/schemas/Resume'
- *       400:
- *         description: Bad Request - Missing content in request body.
- *       401:
- *         description: Unauthorized - User not authenticated.
- *       500:
- *         description: Internal server error.
+ *       410:
+ *         description: Gone - Endpoint deprecated.
  */
 
-// GET /api/resume - Fetches the authenticated user's resume
+// GET /api/resume - DEPRECATED
 export async function GET(req: NextRequest) {
+  // This endpoint is deprecated. Users can have multiple resumes.
+  // Use GET /api/resumes to get all resumes for a user
+  // or GET /api/resumes/[resumeId] to get a specific resume.
+  return NextResponse.json(
+    { message: 'This endpoint (GET /api/resume) is deprecated. Please use /api/resumes.' },
+    { status: 410 } // 410 Gone
+  );
+  /*
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user?.id) {
@@ -70,24 +55,33 @@ export async function GET(req: NextRequest) {
   }
 
   try {
+    // OLD LOGIC - Causes error because userId is not unique
     const resume = await prisma.resume.findUnique({
       where: { userId: session.user.id },
     });
 
     if (!resume) {
-      // Return 200 OK with null body if no resume is found for the user
       return NextResponse.json(null, { status: 200 });
     }
 
     return NextResponse.json(resume, { status: 200 });
   } catch (error) {
-    console.error('Error fetching resume:', error);
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    console.error('Error in deprecated GET /api/resume:', error);
+    return NextResponse.json({ message: 'Internal server error in deprecated endpoint' }, { status: 500 });
   }
+  */
 }
 
-// POST /api/resume - Creates or updates the authenticated user's resume
+// POST /api/resume - DEPRECATED
 export async function POST(req: NextRequest) {
+  // This endpoint is deprecated. Users can have multiple resumes.
+  // Use POST /api/resumes to create a new resume
+  // or PUT /api/resumes/[resumeId] to update a specific resume.
+  return NextResponse.json(
+    { message: 'This endpoint (POST /api/resume) is deprecated. Please use /api/resumes or /api/resumes/[resumeId].' },
+    { status: 410 } // 410 Gone
+  );
+  /*
   const session = await getServerSession(authOptions);
 
   if (!session || !session.user?.id) {
@@ -102,17 +96,15 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Bad Request: Missing content' }, { status: 400 });
     }
 
-    // Validate content structure if necessary (e.g., using Zod)
-    // For now, we assume content is a valid JSON object as expected by Prisma
-
     const userId = session.user.id;
 
+    // OLD LOGIC - Causes error/unexpected behavior because userId is not unique for upsert's where
     const existingResume = await prisma.resume.findUnique({
       where: { userId },
     });
 
     const resume = await prisma.resume.upsert({
-      where: { userId },
+      where: { userId }, // This where clause is problematic for multiple resumes
       update: {
         content,
       },
@@ -126,10 +118,11 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(resume, { status });
 
   } catch (error) {
-    console.error('Error saving resume:', error);
-    if (error instanceof SyntaxError) { // Handle cases where req.json() fails
-        return NextResponse.json({ message: 'Bad Request: Invalid JSON format' }, { status: 400 });
+    console.error('Error in deprecated POST /api/resume:', error);
+    if (error instanceof SyntaxError) {
+        return NextResponse.json({ message: 'Bad Request: Invalid JSON format in deprecated endpoint' }, { status: 400 });
     }
-    return NextResponse.json({ message: 'Internal server error' }, { status: 500 });
+    return NextResponse.json({ message: 'Internal server error in deprecated endpoint' }, { status: 500 });
   }
+  */
 }
